@@ -4,8 +4,6 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Donut from '../../components/Donut/Donut';
 import Number from '../../components/Number/Number';
 import Graph from '../../components/Graph/Graph';
 import WordTable from '../../components/WordTable/WordTable';
@@ -15,12 +13,15 @@ import './Lookup.css';
 function Lookup() {
   const [suburbs, setSuburbs] = React.useState([]);
   const [state, setState] = React.useState('');
-  const [childrenCount, setChildrenCount] = React.useState([]);
   const [suburb, setSuburb] = React.useState('');
   const [country, setCountry] = React.useState('');
   const [disaster, setDisaster] = React.useState('');
   const [socioeconomic, setSocioeconomic] = React.useState([]);
+  const [totalChildren, setTotalChildren] = React.useState(0);
+  const [singleChildren, setSingleChildren] = React.useState(0);
+  const [coupleChildren, setCoupleChildren] = React.useState(0);
   const [ssc, setSsc] = React.useState(0);
+
   React.useEffect(() => {
     function getData() {
       var suburbsJson = require('../../data/suburbs.json');
@@ -40,9 +41,20 @@ function Lookup() {
   React.useEffect(() => {
     function getChildrenCount() {
       var childrenCountJson = require('../../data/children_count.json');
-      setChildrenCount(childrenCountJson.filter(function(item){
+      var x = childrenCountJson.filter(function(item){
         return item.state == state && item.asgs == suburb;
-      }));
+      });
+      if(x.length != 0){
+        setTotalChildren(x.filter(function(item){
+          return item.composition == "Total";
+        })[0].value);
+        setSingleChildren(x.filter(function(item){
+          return item.composition == "One parent family";
+        })[0].value);
+        setCoupleChildren(x.filter(function(item){
+          return item.composition == "Couple family with children total";
+        })[0].value);
+      }
       var socioeconomics = require('../../data/socioeconomics.json');
       setSocioeconomic(socioeconomics.Sheet1.filter(function(item){
         return item.ssc == ssc;
@@ -81,10 +93,10 @@ function Lookup() {
   ];
   return(
     <div>
-      <AppBar position="static" style={{background:'#2E3B55'}}>
+      <AppBar position="static" style={{background:'#da291c'}}>
         <Toolbar>
           <Typography variant="h6">
-            Save the Children
+            Save the Children - Amenities Optimization
           </Typography>
         </Toolbar>
       </AppBar>
@@ -119,7 +131,7 @@ function Lookup() {
             setSuburb(newInputValue);
           }}
           disabled={country == "" || state == ""}
-          renderInput={(params) => <TextField {...params} label="Suburb (Optional)" variant="outlined" />}
+          renderInput={(params) => <TextField {...params} label="Suburb" variant="outlined" required/>}
         />
         <Autocomplete
           id="states-dropdown"
@@ -130,33 +142,48 @@ function Lookup() {
           }}
           renderInput={(params) => <TextField {...params} label="Disaster" variant="outlined" required/>}
         />
-        <Button variant="contained" color="primary" onClick={() => console.log(socioeconomic)}>
-          SUBMIT
-        </Button>
       </div>
       {(country != "" && state != "" && suburb != "" &&  disaster != "") ? 
         <div>
+          <div className="text">
+            <Typography variant="h2" component="h2">Key statistics: </Typography>
+          </div>          
           <div className="data-container">
             <div className="number-container">
-              <Number value={75555} label="Total Children" />
-              <Number value={75} label="Children dependant on Married Couples" />
-              <Number value={75} label="Children dependant on Single Parents" />
-              <Number value={75} label="Total Adults" />
-              <Number value={socioeconomic.score} label="Socioeconomic Score" />
-              <Number value={75} label="Average Twitter Sentiment" />
+              <Number value={totalChildren != 0 ? totalChildren : "N/A"} label="Total Children" />
+              <Number value={coupleChildren != 0 ? coupleChildren : "N/A"} label="Children dependant on Married Couples" />
+              <Number value={singleChildren != 0 ? singleChildren : "N/A"} label="Children dependant on Single Parents" />
+              <Number value={totalChildren*5 != 0 ? totalChildren*5 : "N/A"} label="Total Adults" />
+              <Number value={socioeconomic.score} label="Socio-Economic Score" />
+              <Number value={-0.55} label={`Average Twitter Sentiment in ${suburb}`} />
             </div>
           </div>
+          <div className="text">
+            <Typography variant="h2" component="h2">Sentimental Analysis data from Twitter: </Typography>
+          </div>
           <div className="data-container-graph">
-            <WordTable/>
-            <Graph data={graphData}/>
+            <div>
+              <div className="text-h5">
+                <Typography variant="h5" component="h5">Word Frequency of Impactful Words </Typography>
+              </div>
+              <WordTable/>
+            </div>
+            <div>
+              <div className="text-h5">
+                <Typography variant="h5" component="h5">Sentiment Ratio over a period of Time </Typography>
+              </div>
+              <Graph data={graphData}/>
+            </div>
+          </div>
+          <div className="text">
+            <Typography variant="h2" component="h2">Amenities optimization: </Typography>
           </div>
           <AmenitiesTable/>
         </div>
       : 
         <div>
-          no
         </div>
-      } 
+      }
     </div>
   );
 }

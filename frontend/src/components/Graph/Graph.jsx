@@ -18,7 +18,7 @@ function Graph(props) {
       <YAxis />
       <Tooltip />
       <Legend />
-      <Line type="monotone" dataKey="sentimentRatio" stroke="#8884d8" activeDot={{ r: 8 }} />
+      <Line type="monotone" dataKey="sentimentRatio" stroke="#009ba6" activeDot={{ r: 8 }} />
     </LineChart>
   );
 }

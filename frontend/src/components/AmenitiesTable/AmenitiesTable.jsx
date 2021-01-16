@@ -8,12 +8,23 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { withStyles } from '@material-ui/core/styles';
+
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: '#da291c',
+      color: '#FFFFFF'
+    },
+    body: {
+      fontSize: 14,
+    },
+  }))(TableCell);
 
 const columns = [
   { id: 'amenity', label: 'Amenity', minWidth: 100 },
   {
     id: 'amount',
-    label: 'Amount needed',
+    label: 'Amount to deliver',
     minWidth: 100,
     align: 'right',
     format: (value) => value.toLocaleString('en-US'),
@@ -42,6 +53,7 @@ const useStyles = makeStyles({
   root: {
     width: '90%',
     marginLeft: '5%',
+    marginBottom:'7em',
   },
   container: {
     maxHeight: 400,
@@ -69,13 +81,13 @@ export default function AmenitiesTable() {
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
+                <StyledTableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
-                </TableCell>
+                </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>

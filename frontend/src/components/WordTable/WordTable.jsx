@@ -8,6 +8,17 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import { withStyles } from '@material-ui/core/styles';
+
+const StyledTableCell = withStyles((theme) => ({
+    head: {
+      backgroundColor: '#da291c',
+      color: '#FFFFFF'
+    },
+    body: {
+      fontSize: 14,
+    },
+  }))(TableCell);
 
 const columns = [
   { id: 'word', label: 'Word', minWidth: 100 },
@@ -39,39 +50,17 @@ function createData(word, postCount, wordCount, averageSentiment) {
 }
 
 const rows = [
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
-  createData('fire', 231, 438, -0.9),
+  createData('fire', 438, 582, -0.71),
+  createData('burn', 341, 423, -0.52),
+  createData('water', 256, 314, -0.53),
+  createData('hurt', 241, 414, -0.82),
+  createData('hungry', 239, 252, -0.76),
+  createData('destroyed', 221, 251, -0.93),
+  createData('homeless', 192, 234, -0.89),
+  createData('gone', 165, 358, -0.90),
+  createData('smoke', 145, 258, -0.75),
+  createData('pollution', 132, 158, -0.41),
+  createData('mask', 92, 109, -0.44),
 ];
 
 const useStyles = makeStyles({
@@ -105,13 +94,13 @@ export default function WordTable() {
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
+                <StyledTableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
                 >
                   {column.label}
-                </TableCell>
+                </StyledTableCell>
               ))}
             </TableRow>
           </TableHead>

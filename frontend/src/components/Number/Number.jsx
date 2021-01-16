@@ -2,7 +2,8 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Box from '@material-ui/core/Box';
-import './Number.css'
+import './Number.css';
+
 function Number(props) {
   return(
     <div className="number">
@@ -18,7 +19,7 @@ function Number(props) {
           alignItems="center"
           justifyContent="center"
         >
-          <Typography variant="h2" component="div" color="textSecondary">{props.value}</Typography>
+          <Typography variant="h2" component="div" color="textPrimary">{props.value}</Typography>
         </Box>
       </Box>
       <Typography variant="h6" component="h6">{props.label}</Typography>
